@@ -45,8 +45,8 @@ func main() {
 
 	a, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "ChatModelAgent",
-		Description: "Chat model agent",
-		Instruction: "You are a chat model agent, first call tool_a, then call tool_b",
+		Description: "聊天模型智能体",
+		Instruction: "你是一个聊天模型智能体，请始终使用中文回答。首先调用tool_a，然后调用tool_b",
 		ToolsConfig: adk.ToolsConfig{
 			ToolsNodeConfig: compose.ToolsNodeConfig{
 				Tools: []tool.BaseTool{
@@ -58,14 +58,14 @@ func main() {
 		Model: model.NewChatModel(),
 	})
 	if err != nil {
-		log.Fatalf("NewChatModelAgent failed, error: %v", err)
+		log.Fatalf("创建聊天模型智能体失败，错误: %v", err)
 	}
 
 	r := adk.NewRunner(ctx, adk.RunnerConfig{
 		Agent: a,
 	})
 
-	iter := r.Query(ctx, "My name is Alice and I am 18 years old")
+	iter := r.Query(ctx, "我的名字是Alice，我18岁")
 	for {
 		event, ok := iter.Next()
 		if !ok {
@@ -77,7 +77,7 @@ func main() {
 }
 
 type ToolAInput struct {
-	Name string `json:"input" jsonschema_description:"User name"`
+	Name string `json:"input" jsonschema_description:"用户名"`
 }
 
 func toolAFn(ctx context.Context, in *ToolAInput) (string, error) {
@@ -87,11 +87,11 @@ func toolAFn(ctx context.Context, in *ToolAInput) (string, error) {
 }
 
 type ToolBInput struct {
-	Age int `json:"input" jsonschema_description:"User age"`
+	Age int `json:"input" jsonschema_description:"用户年龄"`
 }
 
 func toolBFn(ctx context.Context, in *ToolBInput) (string, error) {
 	adk.AddSessionValue(ctx, "user-age", in.Age)
 	userName, _ := adk.GetSessionValue(ctx, "user-name")
-	return fmt.Sprintf("User name: %v, User age: %v", userName, in.Age), nil
+	return fmt.Sprintf("用户名: %v, 用户年龄: %v", userName, in.Age), nil
 }

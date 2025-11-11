@@ -36,7 +36,7 @@ func main() {
 
 	sv, err := buildSupervisor(ctx)
 	if err != nil {
-		log.Fatalf("build supervisor failed: %v", err)
+		log.Fatalf("构建主管失败: %v", err)
 	}
 
 	query := "查找2024年美国和纽约州的GDP。纽约州的GDP占美国GDP的百分之多少？"
@@ -68,6 +68,6 @@ func main() {
 
 	endSpanFn(ctx, lastMessage)
 
-	// wait for all span to be ended
+	// 等待所有span结束
 	time.Sleep(5 * time.Second)
 }

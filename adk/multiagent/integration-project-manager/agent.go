@@ -36,7 +36,7 @@ import (
 func main() {
 	ctx := context.Background()
 
-	// Init chat model for agents
+	// 为智能体初始化聊天模型
 	tcm, err := openai.NewChatModel(ctx, &openai.ChatModelConfig{
 		APIKey:  os.Getenv("OPENAI_API_KEY"),
 		Model:   os.Getenv("OPENAI_MODEL"),
@@ -49,33 +49,33 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Init research agent
+	// 初始化研究智能体
 	researchAgent, err := agents.NewResearchAgent(ctx, tcm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Init code agent
+	// 初始化代码智能体
 	codeAgent, err := agents.NewCodeAgent(ctx, tcm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Init technical agent
+	// 初始化技术审查智能体
 	reviewAgent, err := agents.NewReviewAgent(ctx, tcm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Init project manager agent
+	// 初始化项目经理智能体
 	s, err := agents.NewProjectManagerAgent(ctx, tcm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Combine agents into ADK supervisor pattern
-	// Supervisor: project manager
-	// Sub-agents: researcher / coder / reviewer
+	// 组合成supervisor模式的智能体
+	// Supervisor: 项目经理
+	// Sub-agents: 研究员 / 编码员 / 审查员
 	supervisorAgent, err := supervisor.New(ctx, &supervisor.Config{
 		Supervisor: s,
 		SubAgents:  []adk.Agent{researchAgent, codeAgent, reviewAgent},
@@ -84,20 +84,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Init Agent runner
+	// 配置运行器
 	runner := adk.NewRunner(ctx, adk.RunnerConfig{
 		Agent:           supervisorAgent,
 		EnableStreaming: true,
+		// 你可以在这里禁用流式传输
 		CheckPointStore: newInMemoryStore(),
 	})
 
-	// Replace it with your own query
-	// When using the following query, researchAgent will interrupt and prompt the user to input the specific research subject via stdin.
-	query := "please give me a report about advantages of "
+	// 替换为你自己的查询
+	// 当使用以下查询时，researchAgent将中断并提示用户通过stdin输入具体的研究主题。
+	query := "请给我一份关于的优势报告"
 	checkpointID := "1"
 
-	// The researchAgent may require users to input information multiple times
-	// Therefore, the following flags, "interrupted" and "finished," are used to support multiple interruptions and resumptions.
+	// researchAgent可能需要用户多次输入信息
+	// 因此，使用以下标志"interrupted"和"finished"来支持多次中断和恢复。
 	interrupted := false
 	finished := false
 
@@ -108,7 +109,7 @@ func main() {
 			iter = runner.Query(ctx, query, adk.WithCheckPointID(checkpointID))
 		} else {
 			scanner := bufio.NewScanner(os.Stdin)
-			fmt.Print("\ninput additional context for web search: ")
+			fmt.Print("\n请输入网络搜索的额外上下文: ")
 			scanner.Scan()
 			fmt.Println()
 			nInput := scanner.Text()

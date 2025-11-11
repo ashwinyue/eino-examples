@@ -42,9 +42,9 @@ func main() {
 		Agent:           a,
 	})
 
-	// Query weather
-	println("\n\n>>>>>>>>>Query Weather<<<<<<<<<")
-	iter := runner.Query(ctx, "What's the weather like in Beijing?")
+	// 查询天气
+	println("\n\n>>>>>>>>>查询天气<<<<<<<<<")
+	iter := runner.Query(ctx, "北京天气怎么样？")
 	for {
 		event, ok := iter.Next()
 		if !ok {
@@ -57,9 +57,9 @@ func main() {
 		prints.Event(event)
 	}
 
-	// Route failure
-	println("\n\n>>>>>>>>>Route Failure<<<<<<<<<")
-	iter = runner.Query(ctx, "Help me book a flight from New York to London for tomorrow.")
+	// 路由失败
+	println("\n\n>>>>>>>>>路由失败<<<<<<<<<")
+	iter = runner.Query(ctx, "帮我预订明天从纽约到伦敦的航班。")
 	for {
 		event, ok := iter.Next()
 		if !ok {

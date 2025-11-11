@@ -42,7 +42,7 @@ func buildSearchAgent(ctx context.Context) (adk.Agent, error) {
 
 	search := func(ctx context.Context, req *searchReq) (*searchResp, error) {
 		return &searchResp{
-			Result: "In 2024, the US GDP was $29.18 trillion and New York State's GDP was $2.297 trillion",
+			Result: "2024年，美国GDP为29.18万亿美元，纽约州GDP为2.297万亿美元",
 		}, nil
 	}
 
@@ -67,7 +67,7 @@ func buildSearchAgent(ctx context.Context) (adk.Agent, error) {
 			ToolsNodeConfig: compose.ToolsNodeConfig{
 				Tools: []tool.BaseTool{searchTool},
 				UnknownToolsHandler: func(ctx context.Context, name, input string) (string, error) {
-					return fmt.Sprintf("unknown tool: %s", name), nil
+					return fmt.Sprintf("未知工具: %s", name), nil
 				},
 			},
 		},
@@ -152,7 +152,7 @@ func buildMathAgent(ctx context.Context) (adk.Agent, error) {
 			ToolsNodeConfig: compose.ToolsNodeConfig{
 				Tools: []tool.BaseTool{addTool, multiplyTool, divideTool},
 				UnknownToolsHandler: func(ctx context.Context, name, input string) (string, error) {
-					return fmt.Sprintf("unknown tool: %s", name), nil
+					return fmt.Sprintf("未知工具: %s", name), nil
 				},
 			},
 		},

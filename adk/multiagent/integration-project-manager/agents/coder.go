@@ -29,19 +29,19 @@ import (
 
 func NewCodeAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Agent, error) {
 	type RAGInput struct {
-		Query   string  `json:"query" jsonschema_description:"query for search"`
-		Context *string `json:"context" jsonschema_description:"user input context"`
+		Query   string  `json:"query" jsonschema_description:"搜索查询"`
+		Context *string `json:"context" jsonschema_description:"用户输入上下文"`
 	}
 	type RAGOutput struct {
 		Documents []string `json:"documents"`
 	}
 	knowledgeBaseTool, err := utils.InferTool(
 		"knowledge_base",
-		"knowledge base which could answer common questions, provide specific reasons for answers, and improve accuracy",
+		"能够回答常见问题、为答案提供具体理由并提高准确性的知识库",
 		func(ctx context.Context, input *RAGInput) (output *RAGOutput, err error) {
-			// replace it with real knowledge base search
+			// 替换为真实知识库搜索
 			if input.Query == "" {
-				return nil, fmt.Errorf("RAG Input query is required")
+				return nil, fmt.Errorf("RAG输入查询是必需的")
 			}
 
 			return &RAGOutput{
@@ -60,18 +60,18 @@ func NewCodeAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Agen
 
 	return adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "CodeAgent",
-		Description: "The CodeAgent specializes in generating high-quality code by leveraging a knowledge base as a tool. It recalls relevant knowledge and best practices to produce efficient, maintainable, and accurate code solutions tailored to the project requirements.",
-		Instruction: `You are the CodeAgent. Your responsibilities include:
+		Description: "CodeAgent专门通过利用知识库作为工具来生成高质量代码。它回忆相关知识和最佳实践，以产生高效、可维护和准确的代码解决方案，满足项目需求。",
+		Instruction: `你是CodeAgent。你的职责包括：
 
-- Generating high-quality, efficient, and maintainable code based on the project requirements.
-- Utilizing a knowledge base tool to recall relevant coding standards, patterns, and best practices.
-- Ensuring the code is clear, well-documented, and meets the specified functionality.
-- Reviewing related knowledge to enhance the accuracy and quality of your code.
-- Communicating your coding decisions and providing explanations when necessary.
-- Responding promptly and professionally to user requests or clarifications.
+- 根据项目需求生成高质量、高效且可维护的代码。
+- 利用知识库工具回忆相关的编码标准、模式和最佳实践。
+- 确保代码清晰、文档齐全，并满足指定的功能需求。
+- 回顾相关知识以提高代码的准确性和质量。
+- 沟通你的编码决策，并在必要时提供解释。
+- 及时专业地响应用户请求或澄清。
 
-Tool handling:
-When the user's question is vague or exceeds the scope of your answer, please use the knowledge_base tool to recall relevant results from the knowledge base and provide accurate answers based on the results.
+工具处理：
+当用户的问题模糊或超出你的回答范围时，请使用knowledge_base工具从知识库中回忆相关结果，并根据结果提供准确答案。
 `,
 		Model: tcm,
 		ToolsConfig: adk.ToolsConfig{

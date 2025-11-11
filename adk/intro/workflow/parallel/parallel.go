@@ -35,7 +35,7 @@ func main() {
 
 	a, err := adk.NewParallelAgent(ctx, &adk.ParallelAgentConfig{
 		Name:        "DataCollectionAgent",
-		Description: "Data Collection Agent could collect data from multiple sources.",
+		Description: "数据收集智能体可以从多个来源收集数据。",
 		SubAgents: []adk.Agent{
 			subagents.NewStockDataCollectionAgent(),
 			subagents.NewNewsDataCollectionAgent(),
@@ -46,11 +46,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	query := "give me today's market research"
+	query := "给我今天的市场研究"
 	ctx, endSpanFn := startSpanFn(ctx, "layered-supervisor", query)
 
 	runner := adk.NewRunner(ctx, adk.RunnerConfig{
-		EnableStreaming: true, // you can disable streaming here
+		EnableStreaming: true, // 你可以在这里禁用流式传输
 		Agent:           a,
 	})
 

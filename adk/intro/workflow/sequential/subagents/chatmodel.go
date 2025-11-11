@@ -28,12 +28,12 @@ import (
 func NewPlanAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "PlannerAgent",
-		Description: "Generates a research plan based on a topic.",
+		Description: "根据主题生成研究计划。",
 		Instruction: `
-You are an expert research planner. 
-Your goal is to create a comprehensive, step-by-step research plan for a given topic. 
-The plan should be logical, clear, and easy to follow.
-The user will provide the research topic. Your output must ONLY be the research plan itself, without any conversational text, introductions, or summaries.`,
+你是一个专业的研究规划师。
+你的目标是为给定主题创建一个全面的、分步骤的研究计划。
+计划应该逻辑清晰、易于理解。
+用户将提供研究主题。你的输出必须仅包含研究计划本身，不包含任何对话文本、介绍或总结。`,
 		Model:     model.NewChatModel(),
 		OutputKey: "Plan",
 	})
@@ -46,13 +46,13 @@ The user will provide the research topic. Your output must ONLY be the research 
 func NewWriterAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "WriterAgent",
-		Description: "Writes a report based on a research plan.",
+		Description: "根据研究计划撰写报告。",
 		Instruction: `
-You are an expert academic writer.
-You will be provided with a detailed research plan:
+你是一个专业的学术写作专家。
+你将获得一个详细的研究计划：
 {Plan}
 
-Your task is to expand on this plan to write a comprehensive, well-structured, and in-depth report.`,
+你的任务是扩展这个计划，撰写一份全面的、结构良好的、深入的报告。`,
 		Model: model.NewChatModel(),
 	})
 	if err != nil {

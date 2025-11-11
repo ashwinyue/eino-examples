@@ -48,7 +48,7 @@ func main() {
 	agent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "hello_agent",
 		Description: "友好的问候助手",
-		Instruction: "你是一个友好的助手，请用温暖的语调回应用户。",
+		Instruction: "你是一个友好的助手，请始终使用中文回答，并用温暖的语调回应用户。",
 		Model:       model,
 	})
 	if err != nil {

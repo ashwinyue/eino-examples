@@ -27,14 +27,14 @@ func NewReviewAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Ag
 	// these sub-agents don't need description because they'll be set in a fixed workflow.
 	questionAnalysisAgent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "question_analysis_agent",
-		Description: "question analysis agent",
-		Instruction: `You are the Question Analysis Agent. Your responsibilities include:
+		Description: "问题分析智能体",
+		Instruction: `你是问题分析智能体。你的职责包括：
 
-- Analyzing the given research or coding results to identify critical questions and evaluation criteria.
-- Breaking down complex issues into clear, manageable components.
-- Highlighting potential problems or areas of concern.
-- Preparing a structured framework to guide the subsequent review generation.
-- Ensuring thorough understanding of the content before passing it on.`,
+- 分析给定的研究或编码结果，以识别关键问题和评估标准。
+- 将复杂问题分解为清晰、可管理的组成部分。
+- 突出潜在问题或关注领域。
+- 准备结构化框架以指导后续的审查生成。
+- 在传递内容之前确保全面理解。`,
 		Model: tcm,
 	})
 	if err != nil {
@@ -43,14 +43,14 @@ func NewReviewAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Ag
 
 	generateReviewAgent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "generate_review_agent",
-		Description: "generate review agent",
-		Instruction: `You are the Generate Review Agent. Your role is to:
+		Description: "生成审查智能体",
+		Instruction: `你是生成审查智能体。你的职责是：
 
-- Produce comprehensive and balanced reviews based on the question analysis.
-- Highlight strengths, weaknesses, and areas for improvement.
-- Provide constructive and actionable feedback.
-- Maintain objectivity and clarity in your evaluations.
-- Prepare the review content for validation in the next step.`,
+- 基于问题分析生成全面且平衡的审查。
+- 突出优点、缺点和改进领域。
+- 提供建设性和可操作的反馈。
+- 在评估中保持客观性和清晰性。
+- 为下一步的验证准备审查内容。`,
 		Model: tcm,
 	})
 	if err != nil {
@@ -59,14 +59,14 @@ func NewReviewAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Ag
 
 	reviewValidationAgent, err := adk.NewChatModelAgent(ctx, &adk.ChatModelAgentConfig{
 		Name:        "review_validation_agent",
-		Description: "review validation agent",
-		Instruction: `You are the Review Validation Agent. Your tasks are to:
+		Description: "审查验证智能体",
+		Instruction: `你是审查验证智能体。你的任务是：
 
-- Validate the generated review for accuracy, coherence, and fairness.
-- Check for logical consistency and completeness.
-- Identify any biases or errors and suggest corrections.
-- Confirm that the review aligns with the original analysis and project goals.
-- Approve the review for final presentation or request revisions if necessary.`,
+- 验证生成的审查的准确性、连贯性和公平性。
+- 检查逻辑一致性和完整性。
+- 识别任何偏见或错误并提出修正建议。
+- 确认审查与原始分析和项目目标一致。
+- 批准审查以供最终展示，或在必要时请求修订。`,
 		Model: tcm,
 	})
 	if err != nil {
@@ -75,7 +75,7 @@ func NewReviewAgent(ctx context.Context, tcm model.ToolCallingChatModel) (adk.Ag
 
 	return adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
 		Name:        "ReviewAgent",
-		Description: "The ReviewAgent is responsible for evaluating research and coding results through a sequential workflow. It orchestrates three key steps—question analysis, review generation, and review validation—to provide well-reasoned assessments that support project management decisions.",
+		Description: "ReviewAgent负责通过顺序工作流评估研究和编码结果。它协调三个关键步骤——问题分析、审查生成和审查验证——以提供支持项目管理决策的合理评估。",
 		SubAgents:   []adk.Agent{questionAnalysisAgent, generateReviewAgent, reviewValidationAgent},
 	})
 }

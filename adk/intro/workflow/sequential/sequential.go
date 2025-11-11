@@ -36,18 +36,18 @@ func main() {
 
 	a, err := adk.NewSequentialAgent(ctx, &adk.SequentialAgentConfig{
 		Name:        "ResearchAgent",
-		Description: "A sequential workflow for planning and writing a research report.",
+		Description: "一个用于规划和撰写研究报告的顺序工作流。",
 		SubAgents:   []adk.Agent{subagents.NewPlanAgent(), subagents.NewWriterAgent()},
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	query := "The history of Large Language Models"
+	query := "大型语言模型的历史"
 	ctx, endSpanFn := startSpanFn(ctx, "layered-supervisor", query)
 
 	runner := adk.NewRunner(ctx, adk.RunnerConfig{
-		EnableStreaming: true, // you can disable streaming here
+		EnableStreaming: true, // 你可以在这里禁用流式传输
 		Agent:           a,
 	})
 

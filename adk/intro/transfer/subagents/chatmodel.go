@@ -36,7 +36,7 @@ type GetWeatherInput struct {
 func NewWeatherAgent() adk.Agent {
 	weatherTool, err := utils.InferTool(
 		"get_weather",
-		"Get the current weather for a specified city.", // English description
+		"获取指定城市的当前天气。", // 中文描述
 		func(ctx context.Context, input *GetWeatherInput) (string, error) {
 			return fmt.Sprintf(`The temperature in %s is 25°C`, input.City), nil
 		},
@@ -47,9 +47,9 @@ func NewWeatherAgent() adk.Agent {
 
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "WeatherAgent",
-		Description: "This agent can get the current weather for a given city.",
-		Instruction: `Your sole purpose is to get the current weather for a given city using the 'get_weather' tool.
-After calling the tool, report the result directly to the user.`,
+		Description: "这个智能体可以获取给定城市的当前天气。",
+		Instruction: `你的唯一目的是使用'get_weather'工具获取给定城市的当前天气。
+请始终使用中文回答。调用工具后，直接向用户报告结果。`,
 		Model: model.NewChatModel(),
 		ToolsConfig: adk.ToolsConfig{
 			ToolsNodeConfig: compose.ToolsNodeConfig{
@@ -66,9 +66,9 @@ After calling the tool, report the result directly to the user.`,
 func NewChatAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "ChatAgent",
-		Description: "A general-purpose agent for handling conversational chat.", // English description
-		Instruction: `You are a friendly conversational assistant.
-Your role is to handle general chat and answer questions not related to any specific tool-based tasks.`,
+		Description: "一个用于处理对话聊天通用目的的智能体。", // 中文描述
+		Instruction: `你是一个友好的对话助手。
+请始终使用中文回答。你的角色是处理一般聊天并回答与任何特定基于工具的任务无关的问题。`,
 		Model: model.NewChatModel(),
 	})
 	if err != nil {
@@ -80,10 +80,10 @@ Your role is to handle general chat and answer questions not related to any spec
 func NewRouterAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "RouterAgent",
-		Description: "A manual router that transfers tasks to other expert agents.",
-		Instruction: `You are an intelligent task router.
-Your responsibility is to analyze the user's request and delegate it to the most appropriate expert agent.
-If no agent can handle the task, just inform the user that it cannot be handled.`,
+		Description: "一个手动路由器，将任务转移到其他专家智能体。",
+		Instruction: `你是一个智能任务路由器。
+请始终使用中文回答。你的责任是分析用户的请求并将其委托给最合适的专家智能体。
+如果没有智能体可以处理该任务，只需告知用户该任务无法处理。`,
 		Model: model.NewChatModel(),
 	})
 	if err != nil {

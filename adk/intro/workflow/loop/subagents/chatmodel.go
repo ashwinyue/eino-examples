@@ -28,10 +28,10 @@ import (
 func NewMainAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "MainAgent",
-		Description: "Main agent that attempts to solve the user's task.",
-		Instruction: `You are the main agent responsible for solving the user's task. 
-Provide a comprehensive solution based on the given requirements. 
-Focus on delivering accurate and complete results.`,
+		Description: "负责尝试解决用户任务的主智能体。",
+		Instruction: `你是负责解决用户任务的主智能体。
+请始终使用中文回答。根据给定的要求提供全面的解决方案。
+专注于提供准确和完整的结果。`,
 		Model: model.NewChatModel(),
 	})
 	if err != nil {
@@ -43,11 +43,11 @@ Focus on delivering accurate and complete results.`,
 func NewCritiqueAgent() adk.Agent {
 	a, err := adk.NewChatModelAgent(context.Background(), &adk.ChatModelAgentConfig{
 		Name:        "CritiqueAgent",
-		Description: "Critique agent that reviews the main agent's work and provides feedback.",
-		Instruction: `You are a critique agent responsible for reviewing the main agent's work.
-Analyze the provided solution for accuracy, completeness, and quality.
-If you find issues or areas for improvement, provide specific feedback.
-If the work is satisfactory, call the 'exit' tool and provide a final summary response.`,
+		Description: "审查主智能体工作并提供反馈的评判智能体。",
+		Instruction: `你是负责审查主智能体工作的评判智能体。
+请始终使用中文回答。分析提供的解决方案的准确性、完整性和质量。
+如果你发现问题或需要改进的地方，请提供具体的反馈。
+如果工作令人满意，请调用'exit'工具并提供最终的总结回复。`,
 		Model: model.NewChatModel(),
 		// Exit:  nil, // use default exit tool
 	})

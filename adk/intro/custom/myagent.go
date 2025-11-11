@@ -32,7 +32,7 @@ func (m *MyAgent) Name(ctx context.Context) string {
 }
 
 func (m *MyAgent) Description(ctx context.Context) string {
-	return "Description"
+	return "一个使用中文回答的自定义智能体"
 }
 
 func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, options ...adk.AgentRunOption) *adk.AsyncIterator[*adk.AgentEvent] {
@@ -42,19 +42,19 @@ func (m *MyAgent) Run(ctx context.Context, input *adk.AgentInput, options ...adk
 			e := recover()
 			if e != nil {
 				gen.Send(&adk.AgentEvent{
-					Err: fmt.Errorf("recovered from panic: %v", e),
+					Err: fmt.Errorf("从恐慌中恢复: %v", e),
 				})
 			}
 			gen.Close()
 		}()
-		// Agent run code
+		// 智能体运行代码
 		gen.Send(&adk.AgentEvent{
 			Output: &adk.AgentOutput{
 				MessageOutput: &adk.MessageVariant{
 					IsStreaming: false,
 					Message: &schema.Message{
 						Role:    schema.Assistant,
-						Content: "Hello, World",
+						Content: "你好，世界",
 					},
 					Role: schema.Assistant,
 				},

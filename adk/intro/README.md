@@ -1,5 +1,5 @@
-# Eino ADK Introduction Examples
+# Eino ADK 入门示例
 
-This directory contains examples referenced or excerpted from the Eino ADK documentation.
+此目录包含从 Eino ADK 文档中引用或摘录的示例。
 
-Each subdirectory contains a main function that serves as an independent, runnable example.
+每个子目录都包含一个作为独立可运行示例的主函数。

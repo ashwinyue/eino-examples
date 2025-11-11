@@ -36,7 +36,7 @@ func main() {
 
 	a, err := adk.NewLoopAgent(ctx, &adk.LoopAgentConfig{
 		Name:          "ReflectionAgent",
-		Description:   "Reflection agent with main and critique agent for iterative task solving.",
+		Description:   "带有主智能体和评判智能体的反思智能体，用于迭代任务解决。",
 		SubAgents:     []adk.Agent{subagents.NewMainAgent(), subagents.NewCritiqueAgent()},
 		MaxIterations: 5,
 	})
@@ -44,11 +44,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	query := "briefly introduce what a multimodal embedding model is."
+	query := "简要介绍什么是多模态嵌入模型。"
 	ctx, endSpanFn := startSpanFn(ctx, "layered-supervisor", query)
 
 	runner := adk.NewRunner(ctx, adk.RunnerConfig{
-		EnableStreaming: true, // you can disable streaming here
+		EnableStreaming: true, // 你可以在这里禁用流式传输
 		Agent:           a,
 	})
 

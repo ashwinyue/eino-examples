@@ -25,13 +25,13 @@ import (
 	"github.com/cloudwego/eino/components/tool/utils"
 )
 
-// WeatherRequest represents a weather query request
+// WeatherRequest 表示天气查询请求
 type WeatherRequest struct {
 	City string `json:"city" jsonschema_description:"获取天气信息的城市名称"`
 	Date string `json:"date" jsonschema_description:"日期，格式为YYYY-MM-DD（可选）"`
 }
 
-// WeatherResponse represents weather information
+// WeatherResponse 表示天气信息
 type WeatherResponse struct {
 	City        string `json:"city"`
 	Temperature int    `json:"temperature"`
@@ -40,7 +40,7 @@ type WeatherResponse struct {
 	Error       string `json:"error,omitempty"`
 }
 
-// FlightRequest represents a flight search request
+// FlightRequest 表示航班搜索请求
 type FlightRequest struct {
 	From       string `json:"from" jsonschema_description:"出发城市"`
 	To         string `json:"to" jsonschema_description:"目的地城市"`
@@ -48,7 +48,7 @@ type FlightRequest struct {
 	Passengers int    `json:"passengers" jsonschema_description:"乘客人数"`
 }
 
-// FlightResponse represents flight search results
+// FlightResponse 表示航班搜索结果
 type FlightResponse struct {
 	Flights []Flight `json:"flights"`
 	Error   string   `json:"error,omitempty"`
@@ -63,7 +63,7 @@ type Flight struct {
 	Duration  string `json:"duration"`
 }
 
-// HotelRequest represents a hotel search request
+// HotelRequest 表示酒店搜索请求
 type HotelRequest struct {
 	City     string `json:"city" jsonschema_description:"搜索酒店的城市"`
 	CheckIn  string `json:"check_in" jsonschema_description:"入住日期，格式为YYYY-MM-DD"`
@@ -71,7 +71,7 @@ type HotelRequest struct {
 	Guests   int    `json:"guests" jsonschema_description:"客人数量"`
 }
 
-// HotelResponse represents hotel search results
+// HotelResponse 表示酒店搜索结果
 type HotelResponse struct {
 	Hotels []Hotel `json:"hotels"`
 	Error  string  `json:"error,omitempty"`
@@ -85,13 +85,13 @@ type Hotel struct {
 	Amenities []string `json:"amenities"`
 }
 
-// AttractionRequest represents a tourist attraction search request
+// AttractionRequest 表示旅游景点搜索请求
 type AttractionRequest struct {
 	City     string `json:"city" jsonschema_description:"搜索景点的城市"`
 	Category string `json:"category" jsonschema_description:"景点类别（博物馆、公园、地标、历史古迹等）"`
 }
 
-// AttractionResponse represents attraction search results
+// AttractionResponse 表示景点搜索结果
 type AttractionResponse struct {
 	Attractions []Attraction `json:"attractions"`
 	Error       string       `json:"error,omitempty"`
@@ -116,11 +116,11 @@ func NewWeatherTool(ctx context.Context) (tool.BaseTool, error) {
 
 			// 模拟天气数据
 			weathers := map[string]WeatherResponse{
-				"Beijing":  {City: "Beijing", Temperature: 15, Condition: "Sunny", Date: req.Date},
-				"Shanghai": {City: "Shanghai", Temperature: 20, Condition: "Cloudy", Date: req.Date},
-				"Tokyo":    {City: "Tokyo", Temperature: 18, Condition: "Rainy", Date: req.Date},
-				"Paris":    {City: "Paris", Temperature: 12, Condition: "Overcast", Date: req.Date},
-				"New York": {City: "New York", Temperature: 8, Condition: "Snow", Date: req.Date},
+				"北京": {City: "北京", Temperature: 15, Condition: "晴天", Date: req.Date},
+				"上海": {City: "上海", Temperature: 20, Condition: "多云", Date: req.Date},
+				"东京": {City: "东京", Temperature: 18, Condition: "雨天", Date: req.Date},
+				"巴黎": {City: "巴黎", Temperature: 12, Condition: "阴天", Date: req.Date},
+				"纽约": {City: "纽约", Temperature: 8, Condition: "雪天", Date: req.Date},
 			}
 
 			if weather, exists := weathers[req.City]; exists {
@@ -128,7 +128,7 @@ func NewWeatherTool(ctx context.Context) (tool.BaseTool, error) {
 			}
 
 			// 根据城市和日期为未知城市生成一致的天气
-			conditions := []string{"Sunny", "Cloudy", "Rainy", "Overcast"}
+			conditions := []string{"晴天", "多云", "雨天", "阴天"}
 			hashInput := req.City + req.Date
 			return &WeatherResponse{
 				City:        req.City,
@@ -148,7 +148,7 @@ func NewFlightSearchTool(ctx context.Context) (tool.BaseTool, error) {
 			}
 
 			// 模拟航班数据
-			airlines := []string{"Air China", "China Eastern", "China Southern", "United Airlines", "Delta"}
+			airlines := []string{"中国国航", "中国东方航空", "中国南方航空", "联合航空", "达美航空"}
 
 			flights := make([]Flight, 3)
 			hashInput := req.From + req.To + req.Date
@@ -198,13 +198,13 @@ func NewHotelSearchTool(ctx context.Context) (tool.BaseTool, error) {
 			}
 
 			// 模拟酒店数据
-			hotelNames := []string{"Grand Hotel", "City Center Inn", "Luxury Resort", "Budget Lodge", "Business Hotel"}
+			hotelNames := []string{"豪华大酒店", "市中心酒店", "度假村", "经济型酒店", "商务酒店"}
 			amenities := [][]string{
-				{"WiFi", "Pool", "Gym", "Spa"},
-				{"WiFi", "Breakfast", "Parking"},
-				{"WiFi", "Pool", "Restaurant", "Bar", "Concierge"},
-				{"WiFi", "Breakfast"},
-				{"WiFi", "Business Center", "Meeting Rooms"},
+				{"WiFi", "游泳池", "健身房", "水疗中心"},
+				{"WiFi", "早餐", "停车场"},
+				{"WiFi", "游泳池", "餐厅", "酒吧", "礼宾服务"},
+				{"WiFi", "早餐"},
+				{"WiFi", "商务中心", "会议室"},
 			}
 
 			hotels := make([]Hotel, 4)
@@ -234,20 +234,20 @@ func NewAttractionSearchTool(ctx context.Context) (tool.BaseTool, error) {
 
 			// 根据城市模拟景点数据
 			attractionsByCity := map[string][]Attraction{
-				"Beijing": {
-					{Name: "Forbidden City", Description: "Ancient imperial palace", Rating: 4.8, OpenHours: "8:30-17:00", TicketPrice: 60, Category: "historic site"},
-					{Name: "Great Wall", Description: "Historic fortification", Rating: 4.9, OpenHours: "6:00-18:00", TicketPrice: 45, Category: "landmark"},
-					{Name: "Temple of Heaven", Description: "Imperial sacrificial altar", Rating: 4.6, OpenHours: "6:00-22:00", TicketPrice: 35, Category: "park"},
+				"北京": {
+					{Name: "故宫", Description: "古代皇宫", Rating: 4.8, OpenHours: "8:30-17:00", TicketPrice: 60, Category: "历史古迹"},
+					{Name: "长城", Description: "历史防御工事", Rating: 4.9, OpenHours: "6:00-18:00", TicketPrice: 45, Category: "地标"},
+					{Name: "天坛", Description: "皇家祭祀坛", Rating: 4.6, OpenHours: "6:00-22:00", TicketPrice: 35, Category: "公园"},
 				},
-				"Paris": {
-					{Name: "Eiffel Tower", Description: "Iconic iron lattice tower", Rating: 4.7, OpenHours: "9:30-23:45", TicketPrice: 25, Category: "landmark"},
-					{Name: "Louvre Museum", Description: "World's largest art museum", Rating: 4.8, OpenHours: "9:00-18:00", TicketPrice: 17, Category: "museum"},
-					{Name: "Notre-Dame Cathedral", Description: "Medieval Catholic cathedral", Rating: 4.5, OpenHours: "8:00-18:45", TicketPrice: 0, Category: "landmark"},
+				"巴黎": {
+					{Name: "埃菲尔铁塔", Description: "标志性的铁格子塔", Rating: 4.7, OpenHours: "9:30-23:45", TicketPrice: 25, Category: "地标"},
+					{Name: "卢浮宫博物馆", Description: "世界最大的艺术博物馆", Rating: 4.8, OpenHours: "9:00-18:00", TicketPrice: 17, Category: "博物馆"},
+					{Name: "巴黎圣母院", Description: "中世纪天主教大教堂", Rating: 4.5, OpenHours: "8:00-18:45", TicketPrice: 0, Category: "地标"},
 				},
-				"Tokyo": {
-					{Name: "Senso-ji Temple", Description: "Ancient Buddhist temple", Rating: 4.4, OpenHours: "6:00-17:00", TicketPrice: 0, Category: "landmark"},
-					{Name: "Tokyo National Museum", Description: "Largest collection of cultural artifacts", Rating: 4.3, OpenHours: "9:30-17:00", TicketPrice: 1000, Category: "museum"},
-					{Name: "Ueno Park", Description: "Large public park with museums", Rating: 4.2, OpenHours: "5:00-23:00", TicketPrice: 0, Category: "park"},
+				"东京": {
+					{Name: "浅草寺", Description: "古老的佛教寺庙", Rating: 4.4, OpenHours: "6:00-17:00", TicketPrice: 0, Category: "地标"},
+					{Name: "东京国立博物馆", Description: "最大的文化文物收藏", Rating: 4.3, OpenHours: "9:30-17:00", TicketPrice: 1000, Category: "博物馆"},
+					{Name: "上野公园", Description: "拥有博物馆的大型公共公园", Rating: 4.2, OpenHours: "5:00-23:00", TicketPrice: 0, Category: "公园"},
 				},
 			}
 
@@ -266,8 +266,8 @@ func NewAttractionSearchTool(ctx context.Context) (tool.BaseTool, error) {
 			}
 
 			// 为未知城市生成随机景点
-			attractionNames := []string{"Central Museum", "City Park", "Historic Square", "Art Gallery", "Cultural Center"}
-			categories := []string{"museum", "park", "landmark", "historic site", "cultural"}
+			attractionNames := []string{"中央博物馆", "城市公园", "历史广场", "艺术画廊", "文化中心"}
+			categories := []string{"博物馆", "公园", "地标", "历史古迹", "文化"}
 
 			attractions := make([]Attraction, 3)
 			hashInput := req.City + req.Category
@@ -275,7 +275,7 @@ func NewAttractionSearchTool(ctx context.Context) (tool.BaseTool, error) {
 				attractionHash := fmt.Sprintf("%s%d", hashInput, i)
 				attractions[i] = Attraction{
 					Name:        fmt.Sprintf("%s %s", req.City, attractionNames[consistentHashing(attractionHash+"name", 0, len(attractionNames)-1)]),
-					Description: "Popular tourist attraction",
+					Description: "热门旅游景点",
 					Rating:      float64(consistentHashing(attractionHash+"rating", 30, 50)) / 10.0, // 3.0-5.0
 					OpenHours:   "9:00-17:00",
 					TicketPrice: consistentHashing(attractionHash+"price", 0, 50),

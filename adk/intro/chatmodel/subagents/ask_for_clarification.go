@@ -36,13 +36,13 @@ func WithNewInput(input string) tool.Option {
 }
 
 type AskForClarificationInput struct {
-	Question string `json:"question" jsonschema_description:"The specific question you want to ask the user to get missing information"`
+	Question string `json:"question" jsonschema_description:"你想询问用户以获取缺失信息的具体问题"`
 }
 
 func NewAskForClarificationTool() tool.InvokableTool {
 	t, err := utils.InferOptionableTool(
 		"ask_for_clarification",
-		"Call this tool when the user's request is ambiguous or lacks necessary information to proceed. Use it to ask follow-up questions to get the detailed information you need, such as the type of book, before you can effectively use other tools.",
+		"当用户的请求模糊或缺少必要信息以继续进行时，调用此工具。使用它来询问后续问题，以获取你需要的详细信息，例如书籍类型，然后才能有效地使用其他工具。请始终使用中文提问。",
 		func(ctx context.Context, input *AskForClarificationInput, opts ...tool.Option) (output string, err error) {
 			o := tool.GetImplSpecificOptions[askForClarificationOptions](nil, opts...)
 			if o.NewInput == nil {
