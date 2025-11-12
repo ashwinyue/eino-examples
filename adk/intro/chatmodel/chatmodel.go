@@ -35,7 +35,7 @@ func main() {
 	ctx := context.Background()
 	a := subagents.NewBookRecommendAgent()
 	runner := adk.NewRunner(ctx, adk.RunnerConfig{
-		EnableStreaming: true, // 你可以在这里禁用流式传输
+		EnableStreaming: false, // 你可以在这里禁用流式传输
 		Agent:           a,
 		CheckPointStore: newInMemoryStore(),
 	})
